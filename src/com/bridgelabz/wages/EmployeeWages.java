@@ -4,62 +4,57 @@ public class EmployeeWages
 {
     final int PRESENT = 1;
     final int PART_TIME = 2;
-    final int FULL_TIME = 8;
-    final int WAGE_PER_HOUR = 20;
-    final int MAX_WORKING_DAYS = 20;
-    final int MAX_WORKING_HOUR = 60;
-
-    public int checkEmpAttendance(int totalWorkingHour)
+    public int checkEmpAttendance(int totalWorkingHour, int fullTimeWorkingHour, int maxWorkingHour)
     {
-        if (totalWorkingHour == MAX_WORKING_HOUR - (FULL_TIME / 2))
-        {
+        if (totalWorkingHour == maxWorkingHour - (fullTimeWorkingHour / 2)) {
             return PART_TIME;
-        }
-        else
+        } else
         {
             return (int) (Math.random() * 3);
         }
     }
 
-    public int getWorkingHour(int isEmpPresent)
+    public int getWorkingHour(int isEmpPresent, int fullTimeWorkingHour)
     {
         switch (isEmpPresent)
         {
             case PRESENT:
-                return FULL_TIME;
+                return fullTimeWorkingHour;
 
             case PART_TIME:
-                return FULL_TIME / 2;
+                return fullTimeWorkingHour / 2;
 
             default:
                 return 0;
         }
     }
 
-    public double calculateEmployeeWages()
+    public double calculateEmployeeWage(int fullTimeWorkingHour, int wagePerHour, int maxWorkingDay, int maxWorkingHour)
     {
         int totalWorkingHour = 0;
         int day = 0;
-        while (day < MAX_WORKING_DAYS && totalWorkingHour < MAX_WORKING_HOUR)
+        while (day < maxWorkingDay && totalWorkingHour < maxWorkingHour)
         {
             day++;
-            int isEmpPresent = checkEmpAttendance(totalWorkingHour);
+            int isEmpPresent = checkEmpAttendance(totalWorkingHour, fullTimeWorkingHour, maxWorkingHour);
 
-            int empHr = getWorkingHour(isEmpPresent);
+            int empHr = getWorkingHour(isEmpPresent, fullTimeWorkingHour);
 
             totalWorkingHour = totalWorkingHour + empHr;
         }
         System.out.println("Working Hour : " + totalWorkingHour + " Hour");
-        return totalWorkingHour * WAGE_PER_HOUR;
+        return totalWorkingHour * wagePerHour;
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
 
         EmployeeWages employeeWages = new EmployeeWages();
 
-        double totalSalary = employeeWages.calculateEmployeeWages();
-        System.out.println("Employee monthly salary : $" + totalSalary + " USD");
+        double tcsSalary = employeeWages.calculateEmployeeWage(8, 15, 20, 60);
+        System.out.println("Employee monthly salary : $" + tcsSalary + " USD");
+
+        double wiproSalary = employeeWages.calculateEmployeeWage(10, 20, 18, 60);
+        System.out.println("Employee monthly salary : $" + wiproSalary + " USD");
     }
 
 }
